@@ -1,0 +1,14 @@
+name: '🔧 Global Dependencies'
+
+runs:
+    using: 'composite'
+    steps:
+        -   name: Install Gloabal Dependecies
+            run: |
+              npm install -g npm@10.5.0 &&
+              npm install -g browserslist@4.23.0 &&
+              npm install -g typescript@5.4.3 &&
+              npm install -g envsub@4.1.0 &&
+              npm install -g dotenv@16.3.1 &&
+              npm install -g dotenv-cli@7.4.1 &&
+              npm install -g ts-node@10.9.2
