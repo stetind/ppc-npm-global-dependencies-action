@@ -4,6 +4,7 @@ runs:
     using: 'composite'
     steps:
         - name: 'Install Gloabal Dependecies'
+          shell: bash
           run: |
             sudo npm install -g --force npm@10.5.0 \
             browserslist@4.23.0 \
