@@ -1,20 +1,53 @@
 name: '🔧 Global Dependencies'
 
+inputs:
+  bypass_install:
+    description: 'flag to bypass install'
+    type: boolean
+    required: false
+    default: false
+
 runs:
-    using: 'composite'
-    steps:
-        - name: 'Install Gloabal Dependecies'
-          shell: bash
-          run: |
-            sudo npm install -g --force \
-            rimraf@5.0.5 \
-            npm@10.5.0 \
-            browserslist@4.23.0 \
-            typescript@5.4.3 \
-            envsub@4.1.0 \
-            dotenv@16.3.1 \
-            dotenv-cli@7.4.1 \
-            ts-node@10.9.2 \
-            cross-env@7.0.3 \
-            esbuild@0.20.2 \
-            esbuild-node-externals@1.13.0
+  using: 'composite'
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        registry-url: 'https://registry.npmjs.org'
+        cache: npm
+
+    - name: Cache NPM dependencies
+      uses: actions/cache@v4
+      id: cache-npm
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+    - name: 🔧 Setup Npm Token
+      shell: bash
+      run: |
+        npm config set //registry.npmjs.org/:_authToken ${{ inputs.npm_token }} &&
+        echo "//registry.npmjs.org/:_authToken=${{ inputs.npm_token }}" > ./.npmrc &&
+        cp ./.npmrc ~/.npmrc
+
+    - name: 'Install Gloabal Dependecies'
+      shell: bash
+      run: |
+        npm install -g \
+        rimraf@5.0.5 \
+        npm@10.5.0 \
+        browserslist@4.23.0 \
+        typescript@5.4.3 \
+        envsub@4.1.0 \
+        dotenv@16.3.1 \
+        dotenv-cli@7.4.1 \
+        ts-node@10.9.2 \
+        cross-env@7.0.3 \
+        esbuild@0.20.2 \
+        esbuild-node-externals@1.13.0
+
+    - name: Npm Install
+      if: steps.cache-npm.outputs.cache-hit != 'true' && inputs.bypass_install == 'false'
+      run: npm ci --ignore-scripts
+      shell: bash
