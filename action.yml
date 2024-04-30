@@ -1,6 +1,9 @@
 name: '🔧 Global Dependencies'
 
 inputs:
+  npm_token:
+    description: 'NPM token'
+    required: true
   bypass_install:
     description: 'flag to bypass install'
     type: boolean
