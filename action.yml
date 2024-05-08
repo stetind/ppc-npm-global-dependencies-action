@@ -20,12 +20,13 @@ runs:
         registry-url: 'https://registry.npmjs.org'
         cache: npm
 
-    - name: Cache NPM dependencies
-      uses: actions/cache@v4
-      id: cache-npm
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+    #   TODO: Use a key specifed on each ci job the curent is generic
+    # - name: Cache NPM dependencies
+    #   uses: actions/cache@v4
+    #   id: cache-npm
+    #   with:
+    #     path: node_modules
+    #     key: ${{ GITHUB_JOB }}-node-${{ hashFiles('package-lock.json') }}
 
     - name: 🔧 Setup Npm Token
       shell: bash
@@ -59,6 +60,6 @@ runs:
       shell: bash
       
     - name: Npm Install
-      if: steps.cache-npm.outputs.cache-hit != 'true' && inputs.bypass_install == 'false'
+      if: inputs.bypass_install == 'false'
       run: npm ci --ignore-scripts
       shell: bash
