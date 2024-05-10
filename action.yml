@@ -1,6 +1,11 @@
 name: '🔧 Global Dependencies'
 
 inputs:
+  node_version:
+    description: 'The desired node version'
+    required: false
+    default: '20'
+    type: string
   npm_token:
     description: 'NPM token'
     required: true
@@ -16,11 +21,11 @@ runs:
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: ${{ inputs.node_version }}
         registry-url: 'https://registry.npmjs.org'
         cache: npm
 
-    #   TODO: Use a key specifed on each ci job the curent is generic
+    #   TODO: Use a key specified on each ci job the current is generic
     # - name: Cache NPM dependencies
     #   uses: actions/cache@v4
     #   id: cache-npm
@@ -35,7 +40,7 @@ runs:
         echo "//registry.npmjs.org/:_authToken=${{ inputs.npm_token }}" > ./.npmrc &&
         cp ./.npmrc ~/.npmrc
 
-    - name: 'Install Gloabal Dependecies'
+    - name: 'Install Global Dependencies'
       shell: bash
       run: |
         npm install -g \
