@@ -55,15 +55,7 @@ runs:
         cross-env@7.0.3 \
         esbuild@0.20.2 \
         esbuild-node-externals@1.13.0
-
-    - name: echo 1
-      run: echo ${{ steps.cache-npm.outputs.cache-hit }}
-      shell: bash
-
-    - name: echo 2
-      run: echo ${{ inputs.bypass_install }}
-      shell: bash
-      
+     
     - name: Npm Install
       if: inputs.bypass_install == 'false'
       run: npm ci --ignore-scripts
