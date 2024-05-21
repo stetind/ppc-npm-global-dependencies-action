@@ -1,19 +1,9 @@
 name: '🔧 Global Dependencies'
 
 inputs:
-  node_version:
-    description: 'The desired node version'
-    required: false
-    default: '20'
-    type: string
   npm_token:
     description: 'NPM token'
     required: true
-  bypass_install:
-    description: 'flag to bypass install'
-    type: boolean
-    required: false
-    default: false
 
 runs:
   using: 'composite'
@@ -50,6 +40,5 @@ runs:
         esbuild-node-externals@1.13.0
      
     - name: Npm Install
-      if: inputs.bypass_install == 'false'
       run: npm ci --ignore-scripts
       shell: bash
