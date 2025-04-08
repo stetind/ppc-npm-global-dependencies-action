@@ -33,6 +33,11 @@ runs:
         esbuild@0.25.2 \
         esbuild-node-externals@1.18.0
 
+    - name: Debug Production Input
+      shell: bash
+      run: |
+        echo "Production input value: >${{ inputs.production }}< Type: $(echo "${{ inputs.production }}" | awk '{print typeof($0)}')"
+
     - name: Npm Install (Only Prod)
       if: ${{ inputs.production == 'true' }}
       run: npm ci --ignore-scripts --omit=dev
